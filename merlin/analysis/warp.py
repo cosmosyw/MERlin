@@ -108,6 +108,7 @@ class Warp(analysistask.ParallelAnalysisTask):
                         outputTif.save(
                                 transformedImage,
                                 photometric='MINISBLACK',
+                                contiguous=True,
                                 metadata=imageDescription)
 
         if self.writeAlignedFiducialImages:
@@ -125,6 +126,7 @@ class Warp(analysistask.ParallelAnalysisTask):
                     outputTif.save(
                             transformedImage, 
                             photometric='MINISBLACK',
+                            contiguous=True,
                             metadata=fiducialImageDescription)
 
         self._save_transformations(transformationList, fov)
