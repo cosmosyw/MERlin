@@ -523,7 +523,7 @@ class HDF5SpatialFeatureDB(SpatialFeatureDB):
         return loadedFeature
 
     def write_features(self, features: List[SpatialFeature], 
-        fov=None, labels=None) -> None:
+        fov=None, labels3d=None, dapi_labels=None) -> None:
         if fov is None:
             uniqueFOVs = np.unique([f.get_fov() for f in features])
             for currentFOV in uniqueFOVs:
@@ -542,14 +542,23 @@ class HDF5SpatialFeatureDB(SpatialFeatureDB):
                                                      currentFeature,
                                                      fov, currentFeature._label)
                 # save labels if given
-                if labels is not None:
+                if dapi_labels is not None:
+                    labelGroup = f.require_group('dapi_label')
+                    labelGroup.attrs['version'] = merlin.version()
+                    # overwrite
+                    if 'label3D' in labelGroup:
+                        del labelGroup['label3D']
+                    labelData = labelGroup.create_dataset('label3D', 
+                        data=dapi_labels)
+                
+                if labels3d is not None:
                     labelGroup = f.require_group('labeldata')
                     labelGroup.attrs['version'] = merlin.version()
                     # overwrite
                     if 'label3D' in labelGroup:
                         del labelGroup['label3D']
                     labelData = labelGroup.create_dataset('label3D', 
-                        data=labels)
+                        data=labels3d)
 
     def read_features(self, fov: int = None) -> List[SpatialFeature]:
         if fov is None:
