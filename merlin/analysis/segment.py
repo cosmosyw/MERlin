@@ -966,7 +966,7 @@ class CellPoseSegmentMembrane(FeatureSavingAnalysisTask):
         if 'nuclear_channel' not in self.parameters:
             self.parameters['nuclear_channel'] = 'DAPI'
         if 'membrane_channel' not in self.parameters:
-            self.parameters['membrane_channel'] == 'conA'
+            self.parameters['membrane_channel'] = 'conA'
         if 'use_gpu' not in self.parameters:
             self.parameters['use_gpu'] = False
         if 'diameter' not in self.parameters:
