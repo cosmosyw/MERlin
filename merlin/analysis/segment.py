@@ -1496,7 +1496,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
                                    photometric='MINISBLACK',
                                    contiguous=True)
     
-    def filter_membrane_mask_by_nuclei_mask(membrane_mask, nuclei_mask, fraction_threshold = 0.15):
+    def filter_membrane_mask_by_nuclei_mask(self, membrane_mask, nuclei_mask, fraction_threshold = 0.15):
         # store for output
         output_mask = membrane_mask.copy()
         # get cell ids
