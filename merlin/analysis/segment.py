@@ -1558,7 +1558,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
         stacked_images_cyto = np.stack((zero_images, membrane_images, nuclear_images), axis=3)
 
         # Load the cellpose model. 'cyto2' performs better than 'cyto'.
-        model_cyto = models.Cellpose(gpu=self.parameters['use_gpu'], model_type='cyto2')
+        model_cyto = models.CellposeModel(gpu=self.parameters['use_gpu'], model_type='cyto2')
 
         # Run the cellpose prediction using the nuclear and membrane stains
         masks_cyto, flows_cyto, styles_cyto, diams_cyto = model_cyto.eval(stacked_images_cyto, 
@@ -1576,7 +1576,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
         if self.parameters['combine_two_models']:
             
             # Load the nuclei model
-            model_nuclei = models.Cellpose(gpu=self.parameters['use_gpu'], model_type='nuclei')
+            model_nuclei = models.CellposeModel(gpu=self.parameters['use_gpu'], model_type='nuclei')
 
             # Run the cellpose prediction using the nuclear stain
             masks_nuclei, _, _ = model_nuclei.eval(nuclear_images,
