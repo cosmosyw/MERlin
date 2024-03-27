@@ -1567,7 +1567,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
                                         resample=True, min_size=self.parameters['min_size'])
        
         # Combine 2D segmentation to 3D segmentation
-        if len(masks_combined.shape) == 3: 
+        if len(masks_cyto.shape) == 3: 
             masks3d = self.combine_2d_segmentation_masks_into_3d(masks_cyto)
         else:
             masks3d = np.array([masks_cyto])
@@ -1606,7 +1606,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
             for i in np.unique(masks_combined) if i != 0]
 
         featureDB = self.get_feature_database()
-        featureDB.write_features(featureList, fragmentIndex)
+        featureDB.write_features(featureList, fragmentIndex, masks_combined)
 
 
 class CleanCellBoundaries(analysistask.ParallelAnalysisTask):
