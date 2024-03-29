@@ -107,7 +107,7 @@ class WatershedSegment(FeatureSavingAnalysisTask):
         zPos = np.array(self.dataSet.get_data_organization().get_z_positions())
         featureList = [spatialfeature.SpatialFeature.feature_from_label_matrix(
             (watershedOutput == i), fragmentIndex,
-            globalTask.fov_to_global_transform(fragmentIndex), zPos)
+            globalTask.fov_to_global_transform(fragmentIndex), zPos, i)
             for i in np.unique(watershedOutput) if i != 0]
 
         featureDB = self.get_feature_database()
@@ -460,7 +460,7 @@ class CellPoseSegment(FeatureSavingAnalysisTask):
         zPos = np.array(self.dataSet.get_data_organization().get_z_positions())
         featureList = [spatialfeature.SpatialFeature.feature_from_label_matrix(
             (masks3d == i), fragmentIndex,
-            globalTask.fov_to_global_transform(fragmentIndex), zPos)
+            globalTask.fov_to_global_transform(fragmentIndex), zPos, i)
             for i in np.unique(masks3d) if i != 0]
 
         featureDB = self.get_feature_database()
@@ -949,7 +949,7 @@ class CellPoseSegment_DAPI_user_trained_model(FeatureSavingAnalysisTask):
         zPos = np.array(self.dataSet.get_data_organization().get_z_positions())
         featureList = [spatialfeature.SpatialFeature.feature_from_label_matrix(
             (labels3d == i), fragmentIndex,
-            globalTask.fov_to_global_transform(fragmentIndex), zPos)
+            globalTask.fov_to_global_transform(fragmentIndex), zPos, i)
             for i in np.unique(labels3d) if i != 0]
 
         featureDB = self.get_feature_database()
@@ -1256,11 +1256,11 @@ class CellPoseSegmentMembrane(FeatureSavingAnalysisTask):
         zPos = np.array(self.dataSet.get_data_organization().get_z_positions())
         featureList = [spatialfeature.SpatialFeature.feature_from_label_matrix(
             (masks3d == i), fragmentIndex,
-            globalTask.fov_to_global_transform(fragmentIndex), zPos)
+            globalTask.fov_to_global_transform(fragmentIndex), zPos, i)
             for i in np.unique(masks3d) if i != 0]
 
         featureDB = self.get_feature_database()
-        featureDB.write_features(featureList, fragmentIndex)
+        featureDB.write_features(featureList, fragmentIndex, masks3d)
 
 
 
@@ -1602,7 +1602,7 @@ class CellPoseSegmentMembrane_Cosmos(FeatureSavingAnalysisTask):
         zPos = np.array(self.dataSet.get_data_organization().get_z_positions())
         featureList = [spatialfeature.SpatialFeature.feature_from_label_matrix(
             (masks_combined == i), fragmentIndex,
-            globalTask.fov_to_global_transform(fragmentIndex), zPos)
+            globalTask.fov_to_global_transform(fragmentIndex), zPos, i) # add label
             for i in np.unique(masks_combined) if i != 0]
 
         featureDB = self.get_feature_database()
