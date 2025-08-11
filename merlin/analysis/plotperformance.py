@@ -11,9 +11,9 @@ from random import sample
 import time
 
 from merlin import plots
-plt.style.use(
-        os.sep.join([os.path.dirname(merlin.__file__),
-                     'ext', 'default.mplstyle']))
+#plt.style.use(
+#        os.sep.join([os.path.dirname(merlin.__file__),
+#                     'ext', 'default.mplstyle']))
 
 
 class PlotPerformance(analysistask.AnalysisTask):
