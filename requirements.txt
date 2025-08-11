@@ -32,4 +32,4 @@ docutils>=0.10
 pillow>=7.0.0
 pulp<2.8.0
 nd2
-cellpose
+cellpose==2.2
