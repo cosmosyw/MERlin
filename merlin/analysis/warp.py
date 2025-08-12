@@ -107,7 +107,7 @@ class Warp(analysistask.ParallelAnalysisTask):
                         transformedImage = transform.warp(
                                 inputImage, t, preserve_range=True) \
                             .astype(inputImage.dtype)
-                        outputTif.save(
+                        outputTif.write(
                                 transformedImage,
                                 photometric='MINISBLACK',
                                 contiguous=True,
@@ -128,7 +128,7 @@ class Warp(analysistask.ParallelAnalysisTask):
                                 inputImage, t, preserve_range=True) \
                             .astype(inputImage.dtype)
                         # append layer into file
-                        outputTif.save(
+                        outputTif.write(
                                 transformedImage, 
                                 photometric='MINISBLACK',
                                 contiguous=True,
@@ -143,7 +143,7 @@ class Warp(analysistask.ParallelAnalysisTask):
                                     inputImage, t, preserve_range=True) \
                                 .astype(inputImage.dtype)
                             # append layer into file
-                            outputTif.save(
+                            outputTif.write(
                                     transformedImage, 
                                     photometric='MINISBLACK',
                                     contiguous=True,
