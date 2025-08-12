@@ -16,7 +16,7 @@ install_requires = [line.rstrip() for line in open(
     os.path.join(os.path.dirname(__file__), "requirements.txt"))]
 
 setuptools.setup(
-    name="Merlin",
+    name="merlin",
     version="0.1.7",
     description="MERFISH decoding software",
     author="George Emanuel, Pu Zheng",
