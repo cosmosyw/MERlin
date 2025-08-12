@@ -1182,9 +1182,10 @@ class MERFISHDataSet(ImageDataSet):
     def get_fiducial_dimension(self, dataChannel):
         _fiducial_frames = self.dataOrganization.get_fiducial_frames(dataChannel)
         #print(f"** fiducial frame: {_fiducial_frames}, type={type(_fiducial_frames)}")
-        if isinstance(_fiducial_frames, int) or isinstance(_fiducial_frames, int):
-            _fiducial_dim = 2 # 2D
-        elif isinstance(_fiducial_frames, np.ndarray):
+        # default to be 2D
+        _fiducial_dim = 2 # 2D
+        # chagne if the frames are 3D
+        if isinstance(_fiducial_frames, np.ndarray) or isinstance(_fiducial_frames, list):
             _fiducial_dim = 3 # 3D
         #print(_fiducial_dim)
         return _fiducial_dim
