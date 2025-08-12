@@ -89,6 +89,7 @@ def configure_environment():
 
 def merlin():
     print('MERlin - the MERFISH decoding pipeline')
+    sys.stdout.flush()
     parser = build_parser()
     args, argv = parser.parse_known_args()
 
@@ -155,6 +156,7 @@ def generate_analysis_tasks_and_snakefile(dataSet: dataset.MERFISHDataSet,
         analysisParameters, dataSet, sys.executable)
     snakefilePath = snakeGenerator.generate_workflow()
     print('Snakefile generated at %s' % snakefilePath)
+    sys.stdout.flush()
     return snakefilePath
 
 
@@ -166,7 +168,7 @@ def run_with_snakemake(
                         workdir=dataSet.get_snakemake_path(),
                         stats=snakefilePath + '.stats', lock=False,
                         **snakemakeParameters)
-
+    sys.stdout.flush()
     if report:
         reportTime = int(time.time())
         try:
