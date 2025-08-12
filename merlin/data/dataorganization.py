@@ -183,7 +183,7 @@ class DataOrganization(object):
         # compatible with old:
         _fiducial_frame = self.data.iloc[dataChannel]['fiducialFrame']
         # If one integer is given, simple, return as old:
-        if isinstance(_fiducial_frame, np.integer):
+        if isinstance(_fiducial_frame, int):
             #print("integer frame")
             return self.data.iloc[dataChannel]['fiducialFrame']
         # Otherwise, see if zPosition is given:
@@ -211,7 +211,7 @@ class DataOrganization(object):
                 frame = frames
 
             return frame
-    def get_fiducial_frames(self, dataChannel:int) -> np.integer:
+    def get_fiducial_frames(self, dataChannel:int) -> int:
         # compatible with old:
         return self.data.iloc[dataChannel]['fiducialFrame']
     
