@@ -167,7 +167,6 @@ def run_with_snakemake(
     snakemake.snakemake(snakefilePath, cores=coreCount,
                         workdir=dataSet.get_snakemake_path(),
                         stats=snakefilePath + '.stats', lock=False, 
-                        printshellcmds=True, verbose=True,
                         **snakemakeParameters)
     sys.stdout.flush()
     if report:
