@@ -26,6 +26,7 @@ from merlin.core import analysistask
 from merlin.data import dataorganization
 from merlin.data import codebook
 from merlin.util import dataportal
+from merlin.util import imagefilters
 
 
 TaskOrName = Union[analysistask.AnalysisTask, str]
@@ -910,6 +911,10 @@ class ImageDataSet(DataSet):
                 imageIn = np.flip(imageIn, axis=1)
             if self.flipVertical:
                 imageIn = np.flip(imageIn, axis=0)
+
+            # add hot pixel correction
+            imageIn = imagefilters.Remove_Hot_Pixels(imageIn, imageIn.dtype, hot_pix_th=0.5, hot_th=4)
+
             return imageIn 
 
     def image_stack_size(self, imagePath):
