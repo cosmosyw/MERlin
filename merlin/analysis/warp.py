@@ -8,6 +8,7 @@ import cv2
 
 from merlin.core import analysistask
 from merlin.util import aberration
+from merlin.util import imagefilters
 
 ref_bit = 0 
 
@@ -65,8 +66,16 @@ class Warp(analysistask.ParallelAnalysisTask):
         Returns:
             a 2-dimensional numpy array containing the specified image
         """
-        inputImage = self.dataSet.get_raw_image(
-            dataChannel, fov, self.dataSet.z_index_to_position(zIndex))
+        #inputImage = self.dataSet.get_raw_image(
+        #    dataChannel, fov, self.dataSet.z_index_to_position(zIndex))
+        ### Try to set up hot pixel correction
+        # get image stack
+        zIndexes = range(len(self.dataSet.get_z_positions()))
+        inputImageStack = np.array([self.dataSet.get_raw_image(dataChannel, fov, self.dataSet.z_index_to_position(z))
+                          for z in zIndexes])
+        # apply hot pixel correction
+        inputImageStack = imagefilters.Remove_Hot_Pixels(inputImageStack, inputImageStack.dtype, hot_pix_th=0.5, hot_th=4)
+        inputImage = inputImageStack[zIndex]
         transformation = self.get_transformation(fov, dataChannel)
         if chromaticCorrector is not None:
             imageColor = self.dataSet.get_data_organization()\
