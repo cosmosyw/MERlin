@@ -36,9 +36,27 @@ def Remove_Hot_Pixels_2D(im, _hotpix_cand, dtype=np.uint16):
     
     # create new image to interpolate the hot pixels with average of neighboring pixels
     _nim = im.copy()
+
+    xs = _hotpix_cand[0]
+    ys = _hotpix_cand[1]
+
+    # mask for valid interior pixels
+    mask = (xs > 0) & (ys > 0) & (xs < im.shape[0] - 1) & (ys < im.shape[1] - 1)
+
+    ix = xs[mask]
+    iy = ys[mask]
+
+    # compute the 4‑neighbor mean in one vectorized shot
+    _nim[ix, iy] = (
+        _nim[ix + 1, iy] +
+        _nim[ix - 1, iy] +
+        _nim[ix, iy + 1] +
+        _nim[ix, iy - 1]
+    ) / 4
+    ''' old for loop code
     for _x, _y in zip(_hotpix_cand[0],_hotpix_cand[1]):
         if _x > 0 and  _y > 0 and _x < im.shape[0]-1 and  _y < im.shape[1]-1:
-            _nim[_x,_y] = (_nim[_x+1,_y]+_nim[_x-1,_y]+_nim[_x,_y+1]+_nim[_x,_y-1])/4
+            _nim[_x,_y] = (_nim[_x+1,_y]+_nim[_x-1,_y]+_nim[_x,_y+1]+_nim[_x,_y-1])/4'''
     return _nim.astype(dtype)
 
 def Find_Hot_Pixels(im, hot_pix_th=0.50, hot_th=4):
