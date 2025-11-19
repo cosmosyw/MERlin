@@ -29,6 +29,9 @@ class Warp(analysistask.ParallelAnalysisTask):
 
         self.writeAlignedFiducialImages = self.parameters[
                 'write_fiducial_images']
+        
+        # initialize a dictionary to store all aligned image stacks
+        self.raw_image_stacks = {}
 
     def get_aligned_image_set(
             self, fov: int,
@@ -70,12 +73,16 @@ class Warp(analysistask.ParallelAnalysisTask):
         #    dataChannel, fov, self.dataSet.z_index_to_position(zIndex))
         ### Try to set up hot pixel correction
         # get image stack
-        zIndexes = range(len(self.dataSet.get_z_positions()))
-        inputImageStack = np.array([self.dataSet.get_raw_image(dataChannel, fov, self.dataSet.z_index_to_position(z))
-                          for z in zIndexes])
-        # apply hot pixel correction
-        inputImageStack = imagefilters.Remove_Hot_Pixels(inputImageStack, inputImageStack.dtype, hot_pix_th=0.5, hot_th=4)
-        inputImage = inputImageStack[zIndex]
+        if (dataChannel, fov) not in self.raw_image_stacks.keys():
+            zIndexes = range(len(self.dataSet.get_z_positions()))
+            inputImageStack = np.array([self.dataSet.get_raw_image(dataChannel, fov, self.dataSet.z_index_to_position(z))
+                            for z in zIndexes])
+            # apply hot pixel correction
+            inputImageStack = imagefilters.Remove_Hot_Pixels(inputImageStack, inputImageStack.dtype, hot_pix_th=0.5, hot_th=4)
+            self.raw_image_stacks[(dataChannel, fov)] = inputImageStack
+            inputImage = inputImageStack[zIndex]
+        else:
+            inputImage = self.raw_image_stacks[(dataChannel, fov)][zIndex]
         transformation = self.get_transformation(fov, dataChannel)
         if chromaticCorrector is not None:
             imageColor = self.dataSet.get_data_organization()\
