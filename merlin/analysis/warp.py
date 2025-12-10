@@ -70,7 +70,7 @@ class Warp(analysistask.ParallelAnalysisTask):
         """
         inputImage = self.dataSet.get_raw_image(
             dataChannel, fov, self.dataSet.z_index_to_position(zIndex))
-        '''
+        
         ### Try to set up hot pixel correction
         # get image stack
         if dataChannel not in self.hot_pixel_cand.keys():
@@ -78,9 +78,9 @@ class Warp(analysistask.ParallelAnalysisTask):
             inputImageStack = np.array([self.dataSet.get_raw_image(dataChannel, fov, self.dataSet.z_index_to_position(z))
                             for z in zIndexes])
             # apply hot pixel correction
-            self.hot_pixel_cand[dataChannel] = imagefilters.Find_Hot_Pixels(inputImageStack, hot_pix_th=0.8, hot_th=1.5)
+            self.hot_pixel_cand[dataChannel] = imagefilters.Find_Hot_Pixels(inputImageStack, hot_pix_th=0.8, hot_th=4)
         inputImage = imagefilters.Remove_Hot_Pixels_2D(inputImage, self.hot_pixel_cand[dataChannel])
-        '''
+        
         transformation = self.get_transformation(fov, dataChannel)
         if chromaticCorrector is not None:
             imageColor = self.dataSet.get_data_organization()\
