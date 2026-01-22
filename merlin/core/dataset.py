@@ -913,7 +913,7 @@ class ImageDataSet(DataSet):
                 for _x, _y in self.hotPixels:
                     if _x > 0 and  _y > 0 and _x < imageIn.shape[0]-1 and  _y < imageIn.shape[1]-1:
                         _nim[_x,_y] = (_nim[_x+1,_y]+_nim[_x-1,_y]+_nim[_x,_y+1]+_nim[_x,_y-1])/4
-                _nim = _nim.dtype(dtype)
+                _nim = _nim.astype(dtype)
                 imageIn = _nim
 
             # apply microscope correction
