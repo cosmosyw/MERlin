@@ -912,7 +912,7 @@ class ImageDataSet(DataSet):
                 _nim = imageIn.copy()
                 for _x, _y in self.hotPixels:
                     if _x > 0 and  _y > 0 and _x < imageIn.shape[1]-1 and  _y < imageIn.shape[2]-1:
-                        _nim[:,_x,_y] = (_nim[:,_x+1,_y]+_nim[:,_x-1,_y]+_nim[:,_x,_y+1]+_nim[:,_x,_y-1])/4
+                        _nim[_x,_y] = (_nim[_x+1,_y]+_nim[_x-1,_y]+_nim[_x,_y+1]+_nim[_x,_y-1])/4
                 _nim = _nim.dtype(dtype)
                 imageIn = _nim
 
