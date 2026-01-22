@@ -904,7 +904,19 @@ class ImageDataSet(DataSet):
     def load_image(self, imagePath, frameIndex):
         with imagereader.infer_reader(
                 self.rawDataPortal.open_file(imagePath)) as reader:
-            imageIn = reader.load_frame(int(frameIndex)) # used here
+            imageIn = reader.load_frame(int(frameIndex))
+
+            # apply hot pixel correction
+            if self.hotPixels is not None:
+                dtype=imageIn.dtype
+                _nim = imageIn.copy()
+                for _x, _y in self.hotPixels:
+                    if _x > 0 and  _y > 0 and _x < imageIn.shape[1]-1 and  _y < imageIn.shape[2]-1:
+                        _nim[:,_x,_y] = (_nim[:,_x+1,_y]+_nim[:,_x-1,_y]+_nim[:,_x,_y+1]+_nim[:,_x,_y-1])/4
+                _nim = _nim.dtype(dtype)
+                imageIn = _nim
+
+            # apply microscope correction
             if self.transpose:
                 imageIn = np.transpose(imageIn)
             if self.flipHorizontal:
@@ -953,6 +965,7 @@ class ImageDataSet(DataSet):
                 'microns_per_pixel', 0.108)
         self.imageDimensions = self.microscopeParameters.get(
                 'image_dimensions', [2048, 2048])
+        self.hotPixels = self.microscopeParameters.get('hot_pixels', None) # add hot pixel correction in microscope files
 
     def get_microns_per_pixel(self):
         """Get the conversion factor to convert pixels to microns."""
